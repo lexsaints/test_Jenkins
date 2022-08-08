@@ -1,0 +1,43 @@
+node("192.168.154.145") {
+   stage 'checkout'
+   def mvnHome = tool 'mvn_agent1'
+   sh 'whoami & pwd' 
+   stage 'build'
+   sh 'echo ===========build============='
+
+   stage 'test'
+   parallel 'test': {
+     //sh "${mvnHome}/bin/mvn -version; sleep 2;"
+     sh 'echo "STAGE TEST"'
+   }
+
+   stage 'archive'
+   archive 'target/*.jar'
+}
+node {
+   stage 'deploy Canary'
+   sh 'echo "write your deploy code here"; sleep 5;'
+   sh 'ifconfig'
+   stage 'deploy Production'
+   input 'Proceed?'
+   sh 'echo "write your deploy code here"; sleep 6;'
+   archive 'target/*.jar'
+}
+node {
+   
+  	stage 'Stage 1'
+  		echo 'stage1'
+  		sh 'ifconfig'
+  		sh 'whoami'
+  		sh 'pwd'
+  		sh 'ls -a'
+  	stage 'Checkout'
+  		git url: 'https://github.com/lexsaints/test_Jenkins.git'
+  		sh 'pwd'
+  		sh 'ls -a'
+  	stage 'Build'
+  		sh './build.sh'
+  	stage 'Deploy'
+  		sh './deploy.sh'
+  
+}
