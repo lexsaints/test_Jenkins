@@ -3,7 +3,7 @@ node {
    	stage 'Stage 1'
    		echo 'stage1'
    	stage 'Checkout'
-   		git url: 'https://github.com/lexsaints/test_Jenkins.git'
+   		echo 'check out'
    	stage 'Build'
    		sh './build.sh'
    	stage 'Deploy'
